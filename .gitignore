@@ -2,3 +2,4 @@ client/.gitignore
 client/README.md
 client/package-lock.json
 client/node_modules
+package-lock.json
