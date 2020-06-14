@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const dbURL = 'mongodb://localhost/ProductDB';
+const dbURL = 'mongodb://localhost:27017/beadando';
 let dbObject;
 
 
@@ -20,11 +20,9 @@ MongoClient.connect(dbURL, function (err, db) {
 
 function getProducts() {
     let cursor = dbObject.collection('Products').find();
-
-    cursor.each(function(err, doc) {
-
+    return cursor.map(function (err, doc) {
         console.log(doc);
-
+        return doc;
     });
 }
 
@@ -46,12 +44,15 @@ function updateProduct() {
     });
 }
 
-function deleteProduct() {
+function deleteProduct(key, value) {
     dbObject.collection('Products').deleteOne(
-
         {
-            "key": "value"
+            key: value
         }
-
     );
 }
+
+exports.deleteProduct = deleteProduct();
+exports.getProducts = getProducts();
+exports.addProduct = addProduct();
+exports.updateProduct = updateProduct();
