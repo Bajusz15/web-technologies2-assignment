@@ -10,9 +10,9 @@ exports.product_create = function (req, res, next) {
         {
             name: req.body.name,
             price: req.body.price,
-            description: req.body.description
         }
     );
+    console.log(req.body);
     product.save(function (err) {
         if (err) {
             return next(err);
