@@ -15,7 +15,7 @@ function ProductList({products, removeProduct,  editProduct }) {
                         <React.Fragment key={i}>
                             <Product
                                 {...product}
-                                key={product.id}
+                                key={product._id}
                                 removeProduct={removeProduct}
                                 editProduct={editProduct}
                             />

@@ -9,14 +9,14 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 
-function Product({ id, name, price, removeProduct, editProduct }) {
+function Product({ _id, name, price, removeProduct, editProduct }) {
     const [isEditing, toggle] = useToggleState(false);
     return (
         <ListItem style={{ height: "64px" }}>
             {isEditing ? (
                 <EditProductForm
                     editProduct={editProduct}
-                    id={id}
+                    id={_id}
                     name={name}
                     price={price}
                     toggleEditForm={toggle}
@@ -30,7 +30,7 @@ function Product({ id, name, price, removeProduct, editProduct }) {
                         {price} Ft
                     </ListItemText>
                     <ListItemSecondaryAction>
-                        <IconButton aria-label='Delete' onClick={() => removeProduct(id)}>
+                        <IconButton aria-label='Delete' onClick={() => removeProduct(_id)}>
                             <DeleteIcon />
                         </IconButton>
                         {/*<IconButton aria-label='Edit' onClick={toggle}>*/}

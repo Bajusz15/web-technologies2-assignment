@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
 import ProductList from "./ProductList";
 import ProductForm from "./ProductForm";
 import Typography from "@material-ui/core/Typography";
@@ -7,11 +8,30 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
 import useTodoState from "./hooks/useProductState";
+async function getInitialProducts() {
+    return await fetch("http://localhost:5000/products/")
+        .then(res => res.json())
+        .then(
+            (result) => {
+                // setProducts([...products, { id: uuid(), name: name, price: price,  completed: false }]);
+                return result;
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+                //do nothing
+                return [];
+            }
+        );
 
+}
 function WarehouseApp() {
-    const initialProducts = JSON.parse(window.localStorage.getItem("products") || "[]");
+
+    //const [products, setProducts] = useState({ products: [] });
+
     const { products, addProduct, removeProduct, editProduct } = useTodoState(
-        initialProducts
+        []
     );
 
     useEffect(() => {

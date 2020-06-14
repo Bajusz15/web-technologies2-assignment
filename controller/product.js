@@ -13,11 +13,11 @@ exports.product_create = function (req, res, next) {
         }
     );
     console.log(req.body);
-    product.save(function (err) {
+    product.save(function (err, object) {
         if (err) {
             return next(err);
         }
-        res.json('Product Created successfully')
+        res.json({id: object.id})
     })
 };
 
