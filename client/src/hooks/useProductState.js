@@ -33,8 +33,8 @@ export default initialProducts => {
       fetch("http://localhost:5000/api/products/add", {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json' ,
-            auth
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + JSON.parse(localStorage.getItem('user')).authdata
         },
         body: JSON.stringify({name: name, price: price})
       })
