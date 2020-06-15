@@ -1,10 +1,14 @@
 import {useEffect, useState} from "react";
+import {authHeader} from "../helpers/auth-header";
 import uuid from "uuid/v4";
 export default initialProducts => {
   const [products, setProducts] = useState(initialProducts);
+  let auth = authHeader();
   useEffect(() => {
     const fetchData=  async () => {
-      const result = await fetch("http://localhost:5000/products/")
+      const result = await fetch("http://localhost:5000/api/products/", {
+          headers: authHeader()
+      })
           .then(res => res.json())
           .then(
               (result) => {
@@ -26,11 +30,11 @@ export default initialProducts => {
   return {
     products,
     addProduct: (name, price) => {
-      fetch("http://localhost:5000/products/add", {
+      fetch("http://localhost:5000/api/products/add", {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json' ,
+            auth
         },
         body: JSON.stringify({name: name, price: price})
       })
@@ -53,8 +57,9 @@ export default initialProducts => {
     removeProduct: productID => {
       //todo: delete from mongodb
       const updatedProducts = products.filter(p => p._id !== productID);
-      fetch("http://localhost:5000/products/"+productID, {
-        method: 'DELETE'
+      fetch("http://localhost:5000/api/products/"+productID, {
+        method: 'DELETE',
+        headers: authHeader()
       })
           .then(res => res.json())
           .then(

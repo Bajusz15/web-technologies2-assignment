@@ -8,8 +8,14 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
 import useTodoState from "./hooks/useProductState";
+import {authHeader} from "./helpers/auth-header";
+import Button from '@material-ui/core/Button';
+import {logout} from "./services/users";
+
 async function getInitialProducts() {
-    return await fetch("http://localhost:5000/products/")
+    return await fetch("http://localhost:5000/api/products/", {
+        headers: authHeader()
+    })
         .then(res => res.json())
         .then(
             (result) => {
@@ -34,9 +40,9 @@ function WarehouseApp() {
         []
     );
 
-    useEffect(() => {
-        window.localStorage.setItem("products", JSON.stringify(products));
-    }, [products]);
+    // useEffect(() => {
+    //     window.localStorage.setItem("products", JSON.stringify(products));
+    // }, [products]);
 
     return (
         <Paper
@@ -50,8 +56,17 @@ function WarehouseApp() {
         >
             <AppBar color='primary' position='static' style={{ height: "64px" }}>
                 <Toolbar>
-                    <Typography color='inherit'>WAREHOUSE APP</Typography>
+                    <Typography style={{ flex: 1 }} color='inherit'>WAREHOUSE APP</Typography>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="secondary"
+                        onClick={(e)=>{e.preventDefault(); logout()}}
+                    >
+                        Logout
+                    </Button>
                 </Toolbar>
+
             </AppBar>
             <Grid container justify='center' style={{ marginTop: "1rem" }}>
                 <Grid item xs={11} md={8} lg={4}>

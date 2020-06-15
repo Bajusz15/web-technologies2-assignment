@@ -1,4 +1,4 @@
-import environment from '../environment';
+
 import {authHeader} from "../helpers/auth-header";
 export const userService = {
     login,
@@ -13,7 +13,7 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(`${environment.apiUrl}/users/authenticate`, requestOptions)
+    return fetch(`http://localhost:5000/login`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a user in the response
@@ -22,8 +22,29 @@ function login(username, password) {
                 // to keep user logged in between page refreshes
                 user.authdata = window.btoa(username + ':' + password);
                 localStorage.setItem('user', JSON.stringify(user));
+                window.location.href = '/app';
             }
+            return user;
+        });
+}
+function register(username, password) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    };
 
+    fetch(`http://localhost:5000/register`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            // login successful if there's a user in the response
+            if (user) {
+                // store user details and basic auth credentials in local storage
+                // to keep user logged in between page refreshes
+                user.authdata = window.btoa(username + ':' + password);
+                localStorage.setItem('user', JSON.stringify(user));
+                window.location.href = '/app';
+            }
             return user;
         });
 }
@@ -31,6 +52,7 @@ function login(username, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+    window.location.reload();
 }
 
 function getAll() {
@@ -39,7 +61,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${environment.apiUrl}/users`, requestOptions).then(handleResponse);
+    return fetch(`http://localhost:5000/api/users`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
@@ -49,7 +71,7 @@ function handleResponse(response) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
-                location.reload(true);
+                //location.reload(true);
             }
 
             const error = (data && data.message) || response.statusText;
@@ -59,3 +81,4 @@ function handleResponse(response) {
         return data;
     });
 }
+export {login, logout, register};

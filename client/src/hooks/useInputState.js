@@ -7,7 +7,7 @@ export default initialVal => {
     //etValue({name: e.target.value, price: e.target.value})
   };
   const reset = () => {
-    //setValue("");
+    setValue("");
   };
   return [value.name, value.price, handleChange, reset];
 };
